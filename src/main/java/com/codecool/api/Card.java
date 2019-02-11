@@ -1,6 +1,6 @@
 package com.codecool.api;
 
-public class Card {
+public class Card implements Comparable<Card>{
 
     private String id;
     private String name;
@@ -38,4 +38,8 @@ public class Card {
         return state;
     }
 
+    @Override
+    public int compareTo(Card o) {
+        return 0;
+    }
 }
