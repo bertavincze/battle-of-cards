@@ -1,24 +1,29 @@
 package com.codecool.api;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
-public class Deck {
+public class Deck implements Iterable<Card>{
 
     private List<Card> cards;
+    
 
-    public Deck() {
-        this.cards = ;
+    public Deck(List<Card> cards) {
+        this.cards = cards;
     }
 
     public List<Card> getDeck() {
         return cards;
     }
 
-    public Card drawCard() {
-        return null;
-    }
-
     public void shuffle() {
+        Collections.shuffle(cards);
+    }
+    
+    @Override
+    public Iterator<Card> iterator() {
+        return cards.iterator();
 
     }
 }

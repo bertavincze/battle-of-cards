@@ -4,14 +4,17 @@ import java.util.List;
 import java.util.Random;
 
 public class Dealer {
-    private List<Card> deck;
-    private Card card;
-
-    public void randomChoose() {
-        Random r = new Random();
+    
+    private Deck deck;
+    
+    public Dealer(Deck deck){
+        this.deck = deck;
     }
 
     public void dealsTo(Player player) {
-        player.getHand().addCard(card);
+        while(deck.iterator().hasNext()){
+            player.getHand().addCard(deck.iterator().next());
+            deck.iterator().remove();
+        }
     }
 }
