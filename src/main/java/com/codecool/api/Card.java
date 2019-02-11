@@ -2,19 +2,40 @@ package com.codecool.api;
 
 public class Card {
 
+    private String id;
+    private String name;
     private Rank rank;
-    private Suite suite;
+    private int weight;
+    private int sandBucketSize;
+    private Money money;
     private State state;
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getSandBucketSize() {
+        return sandBucketSize;
+    }
 
     public Rank getRank() {
         return rank;
     }
 
-    public Suite getSuite() {
-        return suite;
+    public Money getMoney() {
+        return money;
     }
 
     public State getState() {
         return state;
     }
+
 }
