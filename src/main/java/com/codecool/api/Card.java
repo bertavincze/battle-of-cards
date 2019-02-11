@@ -1,6 +1,8 @@
 package com.codecool.api;
 
-public class Card implements Comparable<Card>{
+import java.util.Comparator;
+
+public class Card {
 
     private String id;
     private String name;
@@ -52,8 +54,4 @@ public class Card implements Comparable<Card>{
         this.state = state;
     }
 
-    @Override
-    public int compareTo(Card o) {
-        return 0;
-    }
 }
