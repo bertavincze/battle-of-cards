@@ -1,8 +1,5 @@
 package com.codecool.api;
 
-import java.util.List;
-import java.util.Random;
-
 public class Dealer {
     
     private Deck deck;
