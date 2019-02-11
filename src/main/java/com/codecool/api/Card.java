@@ -10,6 +10,16 @@ public class Card implements Comparable<Card>{
     private Money money;
     private State state;
 
+    public Card(String id, String name, Rank rank, int weight, int sandBucketSize, Money money) {
+        this.id = id;
+        this.name = name;
+        this.rank = rank;
+        this.weight = weight;
+        this.sandBucketSize = sandBucketSize;
+        this.money = money;
+        this.state = State.DOWN;
+    }
+
     public String getId() {
         return id;
     }
@@ -36,6 +46,10 @@ public class Card implements Comparable<Card>{
 
     public State getState() {
         return state;
+    }
+
+    public void setState(State state) {
+        this.state = state;
     }
 
     @Override

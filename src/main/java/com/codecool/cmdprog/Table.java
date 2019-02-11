@@ -1,7 +1,7 @@
 package com.codecool.cmdprog;
 
 import com.codecool.api.Card;
-import jdk.internal.joptsimple.internal.Strings;
+// import jdk.internal.joptsimple.internal.Strings;
 
 import java.util.List;
 
@@ -11,6 +11,7 @@ public class Table {
     
     }
     
+    /*
     public void showCards(List<Card> cards){
         String id= "gombácska";
         int wide = 20;
@@ -22,4 +23,5 @@ public class Table {
         String cardPrint = header + emptyRow +
                            "| jel: " + id;
     }
+    */
 }
