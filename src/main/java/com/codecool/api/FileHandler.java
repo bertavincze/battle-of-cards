@@ -3,6 +3,7 @@ package com.codecool.api;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
 
 public class FileHandler {
 
@@ -20,6 +21,16 @@ public class FileHandler {
             }
         }
         return data;
+    }
+
+    public String[] readTxt(String filename) throws IOException {
+        BufferedReader br = new BufferedReader(new FileReader(filename));
+        int numOfLines = countLines(filename);
+        String[] outputArray = new String[numOfLines];
+        for (int i = 0; i < numOfLines; i++) {
+            outputArray[i] = br.readLine();
+        }
+        return outputArray;
     }
 
     public int countLines(String file) throws IOException {
