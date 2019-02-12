@@ -3,10 +3,7 @@ package com.codecool.cmdprog;
 import com.codecool.api.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Table {
 
@@ -21,7 +18,7 @@ public class Table {
                 case "1":
                     try {
                         Deck deck = newDeck();
-                        newSimulation(deck);
+                        System.out.println(newSimulation(deck).getName());
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
@@ -39,13 +36,35 @@ public class Table {
 
     }
 
-    private void newSimulation(Deck deck) {
+    private PlayerImpl newSimulation(Deck deck) {
         List<PlayerImpl> players = createPlayers();
         Dealer dealer = new Dealer(deck);
-        for (int i = 0; i < players.size(); i++) {
-            dealer.dealsTo(players.get(i), 4);
+        for (PlayerImpl player : players) {
+            dealer.dealsTo(player, 4);
         }
+        Attribute attr = decideAttribute();
+        Card playerOneCard = chooseCard(players.get(0), attr);
+        Card playerTwoCard = chooseCard(players.get(1), attr);
+        CardComparator comparator = new CardComparator(attr);
+        int result = comparator.compare(playerOneCard, playerTwoCard);
+        Card winner;
+        PlayerImpl winnerPlayer = null;
+        switch (result) {
+            case 1:
+                winner = playerOneCard;
+                winnerPlayer = players.get(0);
+            case -1:
+                winner = playerTwoCard;
+                winnerPlayer = players.get(1);
+            case 0:
+                break;
+        }
+        return winnerPlayer;
+    }
 
+    private Card chooseCard(PlayerImpl player, Attribute attr) {
+        Collections.sort(player.getHand().getCards(), new CardComparator(attr));
+        return player.getHand().getCards().get(0);
     }
 
     protected Attribute decideAttribute() {
