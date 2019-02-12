@@ -5,11 +5,13 @@ import com.codecool.api.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Table {
 
     private final Scanner sc = new Scanner(System.in);
+    protected Random random = new Random();
 
     public void newGame() {
         Menu menu = new Menu("Menu", new String[]{"Simulate a game", "Play a game", "Exit"});
@@ -18,9 +20,11 @@ public class Table {
             switch (sc.nextLine()) {
                 case "1":
                     try {
-                        newDeck();
+                        Deck deck = newDeck();
+                        newSimulation(deck);
                     } catch (IOException e) {
                         e.printStackTrace();
+                        break;
                     }
                     break;
                 case "2":
@@ -33,6 +37,33 @@ public class Table {
             }
         }
 
+    }
+
+    private void newSimulation(Deck deck) {
+        List<PlayerImpl> players = createPlayers();
+        Dealer dealer = new Dealer(deck);
+        for (int i = 0; i < players.size(); i++) {
+            dealer.dealsTo(players.get(i), 4);
+        }
+
+    }
+
+    protected Attribute decideAttribute() {
+        List<Attribute> attributes = new ArrayList<>();
+        attributes.add(Attribute.SANDBUCKETSIZE);
+        attributes.add(Attribute.MONEY);
+        attributes.add(Attribute.RANK);
+        attributes.add(Attribute.WEIGHT);
+        return attributes.get(random.nextInt(attributes.size() + 1));
+    }
+
+    private List<PlayerImpl> createPlayers() {
+        List<PlayerImpl> players = new ArrayList<>();
+        PlayerImpl playerOne = new PlayerImpl("Player One");
+        players.add(playerOne);
+        PlayerImpl playerTwo = new PlayerImpl("Player Two");
+        players.add(playerTwo);
+        return players;
     }
 
     protected Deck newDeck() throws IOException {
@@ -52,6 +83,7 @@ public class Table {
         }
         return cards;
     }
+
     /*
     public static void main(String[] args) {
         
