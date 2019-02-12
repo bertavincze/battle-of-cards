@@ -25,7 +25,7 @@ public class TableTwoPlayer extends Table {
         dealer.dealsTo(player, 4);
         dealer.dealsTo(playerAI, 4);
 
-        simulation();
+        simulationOneRound();
 
     }
 
@@ -37,32 +37,45 @@ public class TableTwoPlayer extends Table {
         }
     }
 
-    public void simulation() {
+    public void simulationOneRound() {
         //Show player his/her cards
         List<Card> playerCards = player.getHand().getCards();
+        List<Card> computerCards = playerAI.getHand().getCards();
         printCurrentCards(playerCards);
         Attribute randAttribute = decideAttribute();
         System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: " + randAttribute );
-        askForCardFromUser();
-        askCardFromComputer();
+        askForCardFromUser(playerCards);
+        askCardFromComputer(computerCards, randAttribute);
     }
 
-    public void askForCardFromUser() {
+    public Card askForCardFromUser(List<Card> playerCards) {
+        int num1;
         while(true) {
             System.out.println("Choose a card (1-4): ");
             String num = sc.nextLine();
-            switch (num) {
-                case "1":
-                case "2":
-                case "3":
-                case "4":
-                default: System.out.println("Invalid option!");
-                        break;
+
+            if (!isInteger(num)) {
+                num1 = Integer.parseInt(num);
+                if (num1 > 0 && num1 <= playerCards.size()) {
+                    break;
+                }
             }
         }
+        return playerCards.get(num1-1);
     }
 
-    public void askCardFromComputer() {
-        
+    public void askCardFromComputer(List<Card> computerCards, Attribute attribute) {
+        ;
+
+    }
+
+    protected boolean isInteger( String input ) {
+        try {
+            Integer.parseInt( input );
+            return true;
+        }
+        catch( Exception e ) {
+            return false;
+        }
     }
 }
