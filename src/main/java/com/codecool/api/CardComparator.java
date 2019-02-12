@@ -6,7 +6,7 @@ public class CardComparator implements Comparator<Card> {
 
     private Attribute attribute;
 
-    public CardComparator (Attribute attribute) {
+    public CardComparator(Attribute attribute) {
         this.attribute = attribute;
     }
 
@@ -24,7 +24,9 @@ public class CardComparator implements Comparator<Card> {
 
             case SANDBUCKETSIZE:
                  return o1.getSandBucketSize() - o2.getSandBucketSize();
+
+             default:
+                 throw new IllegalStateException("To handle any attribute not in the switch block.");
         }
-        return 0;
     }
 }
