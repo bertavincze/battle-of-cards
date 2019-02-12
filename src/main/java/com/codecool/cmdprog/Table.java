@@ -7,7 +7,7 @@ import java.util.*;
 
 public class Table {
 
-    private final Scanner sc = new Scanner(System.in);
+    protected final Scanner sc = new Scanner(System.in);
     protected Random random = new Random();
 
     public void newGame() {
@@ -25,7 +25,11 @@ public class Table {
                     }
                     break;
                 case "2":
-                    new TableTwoPlayer().playGame();
+                    try {
+                        new TableTwoPlayer().playGame(sc, newDeck());
+                    } catch (IOException e) {
+                        System.out.println("");
+                    }
                 case "3":
                     System.exit(0);
                 default:

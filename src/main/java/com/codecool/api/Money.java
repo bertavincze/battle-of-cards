@@ -18,4 +18,5 @@ public enum Money {
     public int getValue() {
         return value;
     }
+
 }
