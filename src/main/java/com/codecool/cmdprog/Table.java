@@ -20,7 +20,7 @@ public class Table {
                 case "1":
                     // some method
                 case "2":
-                    new TableTwoPlayer().playGame();
+                    new TableTwoPlayer().playGame(sc);
                 case "3":
                     System.exit(0);
                 default:
