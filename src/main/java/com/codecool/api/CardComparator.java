@@ -24,9 +24,8 @@ public class CardComparator implements Comparator<Card> {
 
             case SANDBUCKETSIZE:
                  return o1.getSandBucketSize() - o2.getSandBucketSize();
-
-             default:
-                 throw new IllegalStateException("To handle any attribute not in the switch block.");
+            default:
+                throw new IllegalStateException("To handle any attribute not in the switch block.");
         }
     }
 }
