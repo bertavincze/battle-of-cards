@@ -24,7 +24,11 @@ public class Table {
                     }
                     break;
                 case "2":
-                    new TableTwoPlayer().playGame(sc);
+                    try {
+                        new TableTwoPlayer().playGame(sc, newDeck());
+                    } catch (IOException e) {
+                        System.out.println("");
+                    }
                 case "3":
                     System.exit(0);
                 default:

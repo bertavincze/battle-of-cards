@@ -54,4 +54,10 @@ public class Card {
         this.state = state;
     }
 
+
+    @Override
+    public String toString() {
+        return "id: " + id +
+            ", name:" + name + ", rank: " + rank + ", weight: " + weight + ", sandBucketSize: " + sandBucketSize + ", money: " + money;
+    }
 }

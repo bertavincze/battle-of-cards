@@ -1,10 +1,9 @@
 package com.codecool.cmdprog;
 
-import com.codecool.api.Dealer;
-import com.codecool.api.Deck;
-import com.codecool.api.Player;
-import com.codecool.api.PlayerImpl;
+import com.codecool.api.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class TableTwoPlayer extends Table {
@@ -13,16 +12,34 @@ public class TableTwoPlayer extends Table {
     private Dealer dealer;
     private Deck deck;
 
-    public void playGame(Scanner reader) {
-        deck = new Deck();
-        dealer = new Dealer();
+    public void playGame(Scanner reader, Deck deck) {
+        dealer = new Dealer(deck);
         System.out.println("Please give your name: ");
         String name = reader.nextLine();
-        player = new PlayerImpl(name);
 
+        //We create the user player and a computer player
+        player = new PlayerImpl(name);
         playerAI = new PlayerImpl("computer");
 
-        dealer.dealsTo(player, 5);
-        dealer.dealsTo(playerAI, 5);
+        //Dealer deal 5 cards to each players
+        dealer.dealsTo(player, 4);
+        dealer.dealsTo(playerAI, 4);
+
+        simulation();
+
+    }
+
+    public  void printCurrentCards(List<Card> playerCards) {
+        for (Card element : playerCards) {
+            System.out.println(element.toString());
+        }
+    }
+
+    public void simulation() {
+        //Show player his/her cards
+        List<Card> playerCards = player.getHand().getCards();
+        printCurrentCards(playerCards);
+
+        System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: ");
     }
 }
