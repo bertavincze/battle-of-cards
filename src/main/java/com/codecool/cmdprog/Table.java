@@ -53,6 +53,7 @@ public class Table {
         int result = comparator.compare(playerOneCard, playerTwoCard);
         Card winner;
         PlayerImpl winnerPlayer = null;
+
         switch (result) {
             case 1:
                 winner = playerOneCard;

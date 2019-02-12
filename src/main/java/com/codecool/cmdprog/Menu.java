@@ -16,4 +16,5 @@ public class Menu {
             System.out.println(i + 1 + ")" + " " + options[i]);
         }
     }
+
 }
