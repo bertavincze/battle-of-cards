@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Table {
-    public static List<Card> cards;
-    public static Deck deck;
+
     private final Scanner sc = new Scanner(System.in);
 
     public void newGame() {
@@ -18,7 +17,12 @@ public class Table {
             menu.displayMenu();
             switch (sc.nextLine()) {
                 case "1":
-                    // some method
+                    try {
+                        newDeck();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    break;
                 case "2":
                     new TableTwoPlayer().playGame();
                 case "3":
@@ -30,7 +34,24 @@ public class Table {
         }
 
     }
-    
+
+    protected Deck newDeck() throws IOException {
+        List<Card> cards = readCards("resources/cards.csv");
+        return new Deck(cards);
+    }
+
+
+    protected List<Card> readCards(String filename) throws IOException {
+        FileHandler fh = new FileHandler();
+        String[][] cardsArray = fh.read(filename);
+        List<Card> cards = new ArrayList<>();
+        for (String[] strings : cardsArray) {
+            cards.add(new Card(strings[0], strings[1], Rank.valueOf(strings[2]),
+                Integer.valueOf(strings[3]), Integer.valueOf(strings[4]),
+                Money.valueOf(strings[5])));
+        }
+        return cards;
+    }
     /*
     public static void main(String[] args) {
         
