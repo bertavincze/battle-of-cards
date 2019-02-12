@@ -7,7 +7,8 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        //new Table().newGame();
+        new Table().newGame();
+        /*
         FileHandler fh = new FileHandler();
         try {
             String[] image = fh.readTxt("resources/image2Players.txt");
@@ -17,6 +18,7 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+    */
     }
+
 }

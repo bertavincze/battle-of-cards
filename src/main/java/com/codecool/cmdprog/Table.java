@@ -5,12 +5,33 @@ import com.codecool.api.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class Table {
     public static List<Card> cards;
     public static Deck deck;
+    private final Scanner sc = new Scanner(System.in);
+
+    public void newGame() {
+        Menu menu = new Menu("Menu", new String[]{"Simulate a game", "Play a game", "Exit"});
+        while (true) {
+            menu.displayMenu();
+            switch (sc.nextLine()) {
+                case "1":
+                    // some method
+                case "2":
+                    new TableTwoPlayer().playGame();
+                case "3":
+                    System.exit(0);
+                default:
+                    System.out.println("Invalid option!");
+                    break;
+            }
+        }
+
+    }
     
-    
+    /*
     public static void main(String[] args) {
         
         FileHandler fh = new FileHandler();
@@ -38,10 +59,6 @@ public class Table {
         }
         t.showCards(cards);
         
-    }
-    
-    public void newGame(){
-    
     }
     
     public void showCards(List<Card> cards) {
@@ -74,4 +91,5 @@ public class Table {
         System.out.printf(leftAligned, " ", " ");
         System.out.printf(closer);
     }
+    */
 }
