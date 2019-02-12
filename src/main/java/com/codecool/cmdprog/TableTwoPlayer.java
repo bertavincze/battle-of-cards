@@ -30,8 +30,10 @@ public class TableTwoPlayer extends Table {
     }
 
     public  void printCurrentCards(List<Card> playerCards) {
+        int count = 1;
         for (Card element : playerCards) {
-            System.out.println(element.toString());
+            System.out.println(count + ". " + element.toString());
+            count++;
         }
     }
 
@@ -39,7 +41,28 @@ public class TableTwoPlayer extends Table {
         //Show player his/her cards
         List<Card> playerCards = player.getHand().getCards();
         printCurrentCards(playerCards);
+        Attribute randAttribute = decideAttribute();
+        System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: " + randAttribute );
+        askForCardFromUser();
+        askCardFromComputer();
+    }
 
-        System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: ");
+    public void askForCardFromUser() {
+        while(true) {
+            System.out.println("Choose a card (1-4): ");
+            String num = sc.nextLine();
+            switch (num) {
+                case "1":
+                case "2":
+                case "3":
+                case "4":
+                default: System.out.println("Invalid option!");
+                        break;
+            }
+        }
+    }
+
+    public void askCardFromComputer() {
+        
     }
 }

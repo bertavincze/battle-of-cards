@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 public class Table {
 
-    private final Scanner sc = new Scanner(System.in);
+    protected final Scanner sc = new Scanner(System.in);
     protected Random random = new Random();
 
     public void newGame() {
