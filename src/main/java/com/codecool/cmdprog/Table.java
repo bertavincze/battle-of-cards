@@ -31,7 +31,7 @@ public class Table {
                     break;
                 case "2":
                     try {
-                        new TableTwoPlayer().playGame(sc, newDeck());
+                        new TableTwoPlayer().startGame(sc, newDeck());
                     } catch (IOException e) {
                         System.out.println("");
                     }

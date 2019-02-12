@@ -14,7 +14,7 @@ public class TableTwoPlayer extends Table {
     private Deck deck;
     List<Card> playerCards;
     List<Card> computerCards;
-    public void playGame(Scanner reader, Deck deck) {
+    public void startGame(Scanner reader, Deck deck) {
 
         dealer = new Dealer(deck);
         dealer.getDeck().shuffle();
@@ -24,10 +24,11 @@ public class TableTwoPlayer extends Table {
         //We create the user player and a computer player
         player = new PlayerImpl(name);
         playerAI = new PlayerImpl("computer");
+        playGame(deck);
 
+    }
 
-
-
+    private void playGame(Deck deck) {
         while (!deck.getDeck().isEmpty()) {
             simulationOneRound(player, playerAI);
             dealer.getDeck().shuffle();
@@ -39,7 +40,6 @@ public class TableTwoPlayer extends Table {
         } else {
             System.out.println("It was a draw");
         }
-
     }
 
     public  void printCurrentCards(List<Card> playerCards) {
@@ -65,19 +65,25 @@ public class TableTwoPlayer extends Table {
         System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: " + randAttribute);
         Card userCard = askForCardFromUser(playerCards);
         Card computerCard = askCardFromComputer(computerCards, randAttribute);
+
+        roundEvaluator(randAttribute, userCard, computerCard);
+
+    }
+
+    //evaluates one round
+    private void roundEvaluator(Attribute randAttribute, Card userCard, Card computerCard) {
+        Card winner;
         CardComparator compared = new CardComparator(randAttribute);
         int result = compared.compare(userCard, computerCard);
         if (result < 0) {
             computerCards.add(userCard);
             winner = computerCard;
-            winnerPlayer = playerAI;
             System.out.println(winner.toString());
             System.out.println("you loose");
             playerCards.remove(userCard);
         } else if (result > 0) {
             playerCards.add(computerCard);
             winner = userCard;
-            winnerPlayer = player;
             System.out.println(winner.toString());
             System.out.println("You won");
             computerCards.remove(computerCard);
@@ -85,7 +91,6 @@ public class TableTwoPlayer extends Table {
             System.out.println("Draw");
 
         }
-
     }
 
     //asks User to choose a card from the cards in his/her hand
