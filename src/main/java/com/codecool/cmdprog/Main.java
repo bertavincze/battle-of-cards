@@ -10,7 +10,7 @@ public class Main {
         //new Table().newGame();
         FileHandler fh = new FileHandler();
         try {
-            String[] image = fh.readTxt("resources/image.txt");
+            String[] image = fh.readTxt("resources/image2Players.txt");
             for (int i = 0; i < image.length; i++) {
                 System.out.println(image[i]);
             }

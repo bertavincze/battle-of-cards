@@ -28,6 +28,14 @@ public class Table {
         }
         deck = new Deck(cards);
         Table t = new Table();
+        try {
+            String[] image = fh.readTxt("resources/image2Players.txt");
+            for (int i = 0; i < image.length; i++) {
+                System.out.println(image[i]);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         t.showCards(cards);
         
     }
