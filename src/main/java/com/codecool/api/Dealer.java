@@ -1,5 +1,6 @@
 package com.codecool.api;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -12,12 +13,14 @@ public class Dealer {
     }
 
     public void dealsTo(Player player, int numberOfCards) {
-
-        while(deck.iterator().hasNext()){
-            for (int i = 0; i < numberOfCards; i++) {
-                player.getHand().addCard(deck.iterator().next());
-                deck.iterator().remove();
-            }
+        Iterator<Card> it = deck.iterator();
+        for (int i = 0; i < numberOfCards; i++) {
+            player.getHand().addCard(it.next());
+            it.remove();
         }
+    }
+
+    public Deck getDeck() {
+        return deck;
     }
 }

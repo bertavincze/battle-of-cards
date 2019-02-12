@@ -18,7 +18,12 @@ public class Table {
                 case "1":
                     try {
                         Deck deck = newDeck();
-                        System.out.println(newSimulation(deck).getName());
+                        try{
+                            System.out.println(newSimulation(deck).getName());
+                        } catch (NullPointerException e) {
+                            System.out.println("Draw");
+                        }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
@@ -30,6 +35,7 @@ public class Table {
                     } catch (IOException e) {
                         System.out.println("");
                     }
+                    break;
                 case "3":
                     System.exit(0);
                 default:
@@ -47,29 +53,28 @@ public class Table {
             dealer.dealsTo(player, 4);
         }
         Attribute attr = decideAttribute();
+        System.out.println(attr);
         Card playerOneCard = chooseCard(players.get(0), attr);
         Card playerTwoCard = chooseCard(players.get(1), attr);
+        System.out.println(playerOneCard.getId());
+        System.out.println(playerTwoCard.getId());
         CardComparator comparator = new CardComparator(attr);
         int result = comparator.compare(playerOneCard, playerTwoCard);
-        Card winner;
-        PlayerImpl winnerPlayer = null;
 
-        switch (result) {
-            case 1:
-                winner = playerOneCard;
-                winnerPlayer = players.get(0);
-            case -1:
-                winner = playerTwoCard;
-                winnerPlayer = players.get(1);
-            case 0:
-                break;
+        System.out.println(result);
+        if (result > 0) {
+            return players.get(0);
+        } else if (result < 0 ) {
+            return players.get(1);
+        } else {
+            return null;
         }
-        return winnerPlayer;
+
     }
 
     private Card chooseCard(PlayerImpl player, Attribute attr) {
         Collections.sort(player.getHand().getCards(), new CardComparator(attr));
-        return player.getHand().getCards().get(0);
+        return player.getHand().getCards().get(player.getHand().getCards().size()-1);
     }
 
     protected Attribute decideAttribute() {
@@ -78,7 +83,7 @@ public class Table {
         attributes.add(Attribute.MONEY);
         attributes.add(Attribute.RANK);
         attributes.add(Attribute.WEIGHT);
-        return attributes.get(random.nextInt(attributes.size() + 1));
+        return attributes.get(random.nextInt(attributes.size()));
     }
 
     private List<PlayerImpl> createPlayers() {
