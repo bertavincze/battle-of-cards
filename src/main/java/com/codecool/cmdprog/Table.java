@@ -81,7 +81,7 @@ public class Table {
         Attribute randAttribute = decideAttribute();
 
         if (!players.get(0).getName().equals("Linux")) {
-            System.out.println("\nVálassz kártyát: \n" + "Ebben a körben az összehasonlítási szempont:" + randAttribute.toString() + "\n");
+            System.out.println("\nVálassz kártyát: \n" + "Ebben a körben az összehasonlítási szempont: " + randAttribute.toString() + "\n");
             printCurrentCards(players.get(0).getHand().getCards());
             System.out.println("\n");
             player1Card = askForCardFromUser(players.get(0));
@@ -124,8 +124,6 @@ public class Table {
             players.get(1).addWonCard(userCard);
             System.out.println(players.get(1).getName() + " nyerte a kört");
         } else if (result > 0) {
-
-
             players.get(0).addWonCard(userCard);
             players.get(0).addWonCard(computerCard);
             System.out.println(players.get(0).getName() + " nyert a kört");
@@ -133,6 +131,8 @@ public class Table {
             System.out.println("döntetlen kör");
 
         }
+        System.out.println(players.get(0).getName() + " eddig " + players.get(0).getWonCards().size() + " kártyát nyert" );
+        System.out.println(players.get(1).getName() + " eddig " + players.get(1).getWonCards().size() + " kártyát nyert"  );
         players.get(1).getHand().getCards().remove(computerCard);
         players.get(0).getHand().getCards().remove(userCard);
     }
