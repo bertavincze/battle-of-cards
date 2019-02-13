@@ -126,7 +126,7 @@ public class Table {
         } else if (result > 0) {
             players.get(0).addWonCard(userCard);
             players.get(0).addWonCard(computerCard);
-            System.out.println(players.get(0).getName() + " nyert a kört");
+            System.out.println(players.get(0).getName() + " nyerte a kört");
         } else {
             System.out.println("döntetlen kör");
 
