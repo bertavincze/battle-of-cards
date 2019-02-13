@@ -9,12 +9,13 @@ import java.util.stream.IntStream;
 
 public class Table {
     private Dealer dealer;
-    protected final Scanner sc = new Scanner(System.in);
-    protected Random random = new Random();
+    private final Scanner sc = new Scanner(System.in);
+    private Random random = new Random();
 
     public void newGame() {
         Menu menu = new Menu("Óvodáskártya", new String[]{"Játék szimuláció", "Játék számítógép ellen", "Kilépés"});
         while (true) {
+            printImage();
             System.out.println("");
             menu.displayMenu();
             switch (sc.nextLine()) {
@@ -43,8 +44,19 @@ public class Table {
 
     }
 
-    //starts up the game
-    public void startGame(Deck deck, String mode) {
+    private void printImage() {
+        FileHandler fh = new FileHandler();
+        try {
+            String[] image = fh.readTxt("resources/image.txt");
+            for (String s : image) {
+                System.out.println(s);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void startGame(Deck deck, String mode) {
         List<PlayerImpl> players;
         dealer = new Dealer(deck);
         dealer.getDeck().shuffle();
@@ -63,7 +75,11 @@ public class Table {
             playOneRound(players);
         }
 
-        //evaluates whole game
+        evaluateWholeGame(players);
+
+    }
+
+    private void evaluateWholeGame(List<PlayerImpl> players) {
         if (players.get(0).getWonCards().size() > players.get(1).getWonCards().size() ) {
             System.out.println(players.get(0).getName() + " nyerte a játékot " + players.get(0).getWonCards().size() + " kártyával.");
         } else if (players.get(0).getWonCards().size() < players.get(1).getWonCards().size() ) {
@@ -71,15 +87,13 @@ public class Table {
         } else {
             System.out.println("Döntetlen!");
         }
-
     }
 
     private void playOneRound(List<PlayerImpl> players) {
         dealCards(players, dealer, 1);
         Card player1Card;
-
         Attribute randAttribute = decideAttribute();
-
+        Card player2Card = chooseCard(players.get(1), randAttribute);
         if (!players.get(0).getName().equals("Linux")) {
             System.out.println("\nVálassz kártyát: \n" + "Ebben a körben az összehasonlítási szempont: " + randAttribute.toString() + "\n");
             printCurrentCards(players.get(0).getHand().getCards());
@@ -87,15 +101,15 @@ public class Table {
             player1Card = askForCardFromUser(players.get(0));
         } else {
             player1Card = chooseCard(players.get(0), randAttribute);
-
         }
-        Card player2Card = chooseCard(players.get(1), randAttribute);
+        System.out.println("\n\t\t\t" + player1Card.getName() + " VS " + player2Card.getName() + "\n");
+        printCurrentCards(Arrays.asList(player1Card, player2Card));
         roundEvaluator(randAttribute, player1Card, player2Card, players);
+        System.out.println("\nFolytatáshoz nyomd meg az ENTER-t.");
+        sc.nextLine();
     }
 
-
-
-    public Card askForCardFromUser(PlayerImpl player) {
+    private Card askForCardFromUser(PlayerImpl player) {
         Card card = null;
         while(card == null) {
             System.out.println("Írd be a kiválasztott kártya jelét: ");
@@ -113,7 +127,6 @@ public class Table {
         return null;
     }
 
-    //evaluates one round
     private void roundEvaluator(Attribute randAttribute, Card userCard, Card computerCard, List<PlayerImpl> players) {
 
         CardComparator compared = new CardComparator(randAttribute);
@@ -122,17 +135,17 @@ public class Table {
 
             players.get(1).addWonCard(computerCard);
             players.get(1).addWonCard(userCard);
-            System.out.println(players.get(1).getName() + " nyerte a kört");
+            System.out.println("\n" + players.get(1).getName() + " nyerte a kört");
         } else if (result > 0) {
             players.get(0).addWonCard(userCard);
             players.get(0).addWonCard(computerCard);
-            System.out.println(players.get(0).getName() + " nyerte a kört");
+            System.out.println("\n" + players.get(0).getName() + " nyerte a kört");
         } else {
-            System.out.println("döntetlen kör");
+            System.out.println("\nDöntetlen kör");
 
         }
-        System.out.println(players.get(0).getName() + " eddig " + players.get(0).getWonCards().size() + " kártyát nyert" );
-        System.out.println(players.get(1).getName() + " eddig " + players.get(1).getWonCards().size() + " kártyát nyert"  );
+        System.out.println("\n" + players.get(0).getName() + " eddig " + players.get(0).getWonCards().size() + " kártyát nyert" );
+        System.out.println("\n" + players.get(1).getName() + " eddig " + players.get(1).getWonCards().size() + " kártyát nyert"  );
         players.get(1).getHand().getCards().remove(computerCard);
         players.get(0).getHand().getCards().remove(userCard);
     }
@@ -154,7 +167,7 @@ public class Table {
         }
     }
 
-    protected Attribute decideAttribute() {
+    private Attribute decideAttribute() {
         List<Attribute> attributes = new ArrayList<>();
         attributes.add(Attribute.SANDBUCKETSIZE);
         attributes.add(Attribute.MONEY);
@@ -172,13 +185,13 @@ public class Table {
         return players;
     }
 
-    protected Deck newDeck() throws IOException {
+    private Deck newDeck() throws IOException {
         List<Card> cards = readCards("resources/cards.csv");
         return new Deck(cards);
     }
 
 
-    protected List<Card> readCards(String filename) throws IOException {
+    private List<Card> readCards(String filename) throws IOException {
         FileHandler fh = new FileHandler();
         String[][] cardsArray = fh.read(filename);
         List<Card> cards = new ArrayList<>();
@@ -190,13 +203,8 @@ public class Table {
         return cards;
     }
 
-    public  void printCurrentCards(List<Card> cards) {
-        /*int count = 1;
-        for (Card element : playerCards) {
-            System.out.println(count + ". " + element.toString());
-            count++;
-        }*/
-        //String header = "+--------------------+ ".repeat(cards.size());
+    private void printCurrentCards(List<Card> cards) {
+
         String closer = "|____________________| ".repeat(cards.size());
         String broccoli = "| megevett brokkoli: | ".repeat(cards.size());
         String apu =      "| apu foglalkozása:  | ".repeat(cards.size());
@@ -204,13 +212,11 @@ public class Table {
         String graphic1 = "        //////         ".repeat(cards.size());
         String graphic2 = "       ( O O )         ".repeat(cards.size());
         String graphic3 = "|--ooO--- ˘ ---Ooo---| ".repeat(cards.size());
-    
-    
+
         String cardField = "| %-18s |";
-    
+
         String cardField1 = IntStream.range(0, cards.size()).mapToObj(i -> cardField + " ").collect(Collectors.joining()) + "%n";
-    
-        //System.out.println(header);
+
         System.out.println(graphic1);
         System.out.println(graphic2);
         System.out.println(graphic3);
@@ -226,7 +232,7 @@ public class Table {
         System.out.printf(cardField1, cards.stream().map((Card c) -> ("vödör: " + c.getSandBucketSize()) + " literes").toArray());
         System.out.println(emptyRow);
         System.out.println(apu);
-        System.out.printf(cardField1, cards.stream().map((Card c) -> c.getMoney()).toArray());
-        System.out.printf(closer);
+        System.out.printf(cardField1, cards.stream().map(Card::getMoney).toArray());
+        System.out.println(closer);
     }
 }
