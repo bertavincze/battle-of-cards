@@ -65,9 +65,9 @@ public class Table {
 
         //evaluates whole game
         if (players.get(0).getWonCards().size() > players.get(1).getWonCards().size() ) {
-            System.out.println(players.get(0).getName() + " nyerte a játékot" + players.get(0).getWonCards().size() + " kártyával.");
+            System.out.println(players.get(0).getName() + " nyerte a játékot " + players.get(0).getWonCards().size() + " kártyával.");
         } else if (players.get(0).getWonCards().size() < players.get(1).getWonCards().size() ) {
-            System.out.println(players.get(1).getName() + " nyerte a játékot" + players.get(1).getWonCards().size() + " kártyával.");
+            System.out.println(players.get(1).getName() + " nyerte a játékot " + players.get(1).getWonCards().size() + " kártyával.");
         } else {
             System.out.println("Döntetlen!");
         }
