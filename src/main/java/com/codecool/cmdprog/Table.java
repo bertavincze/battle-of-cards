@@ -13,8 +13,9 @@ public class Table {
     protected Random random = new Random();
 
     public void newGame() {
-        Menu menu = new Menu("Menu", new String[]{"Simulate a game", "Play a game", "Exit"});
+        Menu menu = new Menu("Óvodáskártya", new String[]{"Játék szimuláció", "Játék számítógép ellen", "Kilépés"});
         while (true) {
+            System.out.println("");
             menu.displayMenu();
             switch (sc.nextLine()) {
                 case "1":
@@ -35,7 +36,7 @@ public class Table {
                 case "3":
                     System.exit(0);
                 default:
-                    System.out.println("Invalid option!");
+                    System.out.println("Nincs ilyen opció");
                     break;
             }
         }
@@ -48,12 +49,12 @@ public class Table {
         dealer = new Dealer(deck);
         dealer.getDeck().shuffle();
         if (mode.equals("Simulation")) {
-            players = createPlayers("Computer1", "Computer2");
+            players = createPlayers("Linux", "Windows");
 
         } else {
-            System.out.println("Please give your name: ");
+            System.out.println("Add meg a neved: ");
             String name = sc.nextLine();
-            players = createPlayers(name, "Computer");
+            players = createPlayers(name, "Ubuntu");
 
         }
         dealCards(players, dealer, 4);
@@ -64,11 +65,11 @@ public class Table {
 
         //evaluates whole game
         if (players.get(0).getWonCards().size() > players.get(1).getWonCards().size() ) {
-            System.out.println(players.get(0).getName() + " won the game");
+            System.out.println(players.get(0).getName() + " nyerte a játékot" + players.get(0).getWonCards().size() + " kártyával.");
         } else if (players.get(0).getWonCards().size() < players.get(1).getWonCards().size() ) {
-            System.out.println(players.get(1).getName() + " won the game");
+            System.out.println(players.get(1).getName() + " nyerte a játékot" + players.get(1).getWonCards().size() + " kártyával.");
         } else {
-            System.out.println("It was a draw");
+            System.out.println("Döntetlen!");
         }
 
     }
@@ -79,12 +80,14 @@ public class Table {
 
         Attribute randAttribute = decideAttribute();
 
-        if (!players.get(0).getName().equals("Computer1")) {
-            System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: " + randAttribute);
+        if (!players.get(0).getName().equals("Linux")) {
+            System.out.println("\nVálassz kártyát: \n" + "Ebben a körben az összehasonlítási szempont:" + randAttribute.toString() + "\n");
             printCurrentCards(players.get(0).getHand().getCards());
+            System.out.println("\n");
             player1Card = askForCardFromUser(players.get(0));
         } else {
             player1Card = chooseCard(players.get(0), randAttribute);
+
         }
         Card player2Card = chooseCard(players.get(1), randAttribute);
         roundEvaluator(randAttribute, player1Card, player2Card, players);
@@ -95,7 +98,7 @@ public class Table {
     public Card askForCardFromUser(PlayerImpl player) {
         Card card = null;
         while(card == null) {
-            System.out.println("Choose a card (sign/jel): ");
+            System.out.println("Írd be a kiválasztott kártya jelét: ");
             card = findCardById(player.getHand().getCards(), sc.nextLine());
         }
         return card;
@@ -116,18 +119,18 @@ public class Table {
         CardComparator compared = new CardComparator(randAttribute);
         int result = compared.compare(userCard, computerCard);
         if (result < 0) {
-            System.out.println(players.get(1).getName() + " won");
+
             players.get(1).addWonCard(computerCard);
             players.get(1).addWonCard(userCard);
-
+            System.out.println(players.get(1).getName() + " nyerte a kört");
         } else if (result > 0) {
 
-            System.out.println(players.get(0).getName() + " won");
+
             players.get(0).addWonCard(userCard);
             players.get(0).addWonCard(computerCard);
-
+            System.out.println(players.get(0).getName() + " nyert a kört");
         } else {
-            System.out.println("Draw");
+            System.out.println("döntetlen kör");
 
         }
         players.get(1).getHand().getCards().remove(computerCard);
