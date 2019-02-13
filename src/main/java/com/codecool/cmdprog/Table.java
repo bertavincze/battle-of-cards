@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Table {
-
+    private Dealer dealer;
     protected final Scanner sc = new Scanner(System.in);
     protected Random random = new Random();
 
@@ -19,13 +19,7 @@ public class Table {
             switch (sc.nextLine()) {
                 case "1":
                     try {
-                        Deck deck = newDeck();
-                        try{
-                            System.out.println(newSimulation(deck).getName());
-                        } catch (NullPointerException e) {
-                            System.out.println("Draw");
-                        }
-
+                        startGame(newDeck(), "Simulation");
                     } catch (IOException e) {
                         e.printStackTrace();
                         break;
@@ -33,7 +27,7 @@ public class Table {
                     break;
                 case "2":
                     try {
-                        new TableTwoPlayer().startGame(sc, newDeck());
+                        startGame(newDeck(), "Two player");
                     } catch (IOException e) {
                         System.out.println("");
                     }
@@ -48,35 +42,113 @@ public class Table {
 
     }
 
-    private PlayerImpl newSimulation(Deck deck) {
-        List<PlayerImpl> players = createPlayers();
-        Dealer dealer = new Dealer(deck);
-        for (PlayerImpl player : players) {
-            dealer.dealsTo(player, 4);
-        }
-        Attribute attr = decideAttribute();
-        System.out.println(attr);
-        Card playerOneCard = chooseCard(players.get(0), attr);
-        Card playerTwoCard = chooseCard(players.get(1), attr);
-        System.out.println(playerOneCard.getId());
-        System.out.println(playerTwoCard.getId());
-        CardComparator comparator = new CardComparator(attr);
-        int result = comparator.compare(playerOneCard, playerTwoCard);
+    //starts up the game
+    public void startGame(Deck deck, String mode) {
+        List<PlayerImpl> players;
+        dealer = new Dealer(deck);
+        dealer.getDeck().shuffle();
+        if (mode.equals("Simulation")) {
+            players = createPlayers("Computer1", "Computer2");
 
-        System.out.println(result);
-        if (result > 0) {
-            return players.get(0);
-        } else if (result < 0 ) {
-            return players.get(1);
         } else {
-            return null;
+            System.out.println("Please give your name: ");
+            String name = sc.nextLine();
+            players = createPlayers(name, "Computer");
+
+        }
+        dealCards(players, dealer, 4);
+
+        while (players.get(0).getHand().getCards().size() != 0 || players.get(1).getHand().getCards().size() != 0) {
+            playOneRound(players);
+        }
+
+        //evaluates whole game
+        if (players.get(0).getWonCards().size() > players.get(1).getWonCards().size() ) {
+            System.out.println(players.get(0).getName() + " won the game");
+        } else if (players.get(0).getWonCards().size() < players.get(1).getWonCards().size() ) {
+            System.out.println(players.get(1).getName() + " won the game");
+        } else {
+            System.out.println("It was a draw");
         }
 
     }
 
+    private void playOneRound(List<PlayerImpl> players) {
+        dealCards(players, dealer, 1);
+        Card player1Card;
+
+        Attribute randAttribute = decideAttribute();
+
+        if (!players.get(0).getName().equals("Computer1")) {
+            System.out.println("Please choose one of your cards (the attribute the cards will be compared in this round is: " + randAttribute);
+            printCurrentCards(players.get(0).getHand().getCards());
+            player1Card = askForCardFromUser(players.get(0));
+        } else {
+            player1Card = chooseCard(players.get(0), randAttribute);
+        }
+        Card player2Card = chooseCard(players.get(1), randAttribute);
+        roundEvaluator(randAttribute, player1Card, player2Card, players);
+    }
+
+
+
+    public Card askForCardFromUser(PlayerImpl player) {
+        Card card = null;
+        while(card == null) {
+            System.out.println("Choose a card (sign/jel): ");
+            card = findCardById(player.getHand().getCards(), sc.nextLine());
+        }
+        return card;
+    }
+
+    private Card findCardById(List<Card> cards, String id) {
+        for (Card card : cards) {
+            if (card.getId().equalsIgnoreCase(id)) {
+                return card;
+            }
+        }
+        return null;
+    }
+
+    //evaluates one round
+    private void roundEvaluator(Attribute randAttribute, Card userCard, Card computerCard, List<PlayerImpl> players) {
+
+        CardComparator compared = new CardComparator(randAttribute);
+        int result = compared.compare(userCard, computerCard);
+        if (result < 0) {
+            System.out.println(players.get(1).getName() + " won");
+            players.get(1).addWonCard(computerCard);
+            players.get(1).addWonCard(userCard);
+
+        } else if (result > 0) {
+
+            System.out.println(players.get(0).getName() + " won");
+            players.get(0).addWonCard(userCard);
+            players.get(0).addWonCard(computerCard);
+
+        } else {
+            System.out.println("Draw");
+
+        }
+        players.get(1).getHand().getCards().remove(computerCard);
+        players.get(0).getHand().getCards().remove(userCard);
+    }
+
+    private void dealCards(List<PlayerImpl> players, Dealer dealer, int cardNum) {
+        if (!dealer.getDeck().getDeck().isEmpty()) {
+            for (PlayerImpl player : players) {
+                dealer.dealsTo(player, cardNum);
+            }
+        }
+    }
+
     private Card chooseCard(PlayerImpl player, Attribute attr) {
-        Collections.sort(player.getHand().getCards(), new CardComparator(attr));
-        return player.getHand().getCards().get(player.getHand().getCards().size()-1);
+        if (player.getHand().getCards().size() >= 1) {
+            Collections.sort(player.getHand().getCards(), new CardComparator(attr));
+            return player.getHand().getCards().get(player.getHand().getCards().size() - 1);
+        } else {
+            return null;
+        }
     }
 
     protected Attribute decideAttribute() {
@@ -88,11 +160,11 @@ public class Table {
         return attributes.get(random.nextInt(attributes.size()));
     }
 
-    private List<PlayerImpl> createPlayers() {
+    private List<PlayerImpl> createPlayers(String name1, String name2) {
         List<PlayerImpl> players = new ArrayList<>();
-        PlayerImpl playerOne = new PlayerImpl("Player One");
+        PlayerImpl playerOne = new PlayerImpl(name1);
         players.add(playerOne);
-        PlayerImpl playerTwo = new PlayerImpl("Player Two");
+        PlayerImpl playerTwo = new PlayerImpl(name2);
         players.add(playerTwo);
         return players;
     }
@@ -114,9 +186,56 @@ public class Table {
         }
         return cards;
     }
+
+    public  void printCurrentCards(List<Card> playerCards) {
+        int count = 1;
+        for (Card element : playerCards) {
+            System.out.println(count + ". " + element.toString());
+            count++;
+        }
+    }
+
+    /*
     
     public void showCards(List<Card> cards) {
+<<<<<<< HEAD
     
     }
+=======
+        
+        String header = " ____________________  ".repeat(cards.size());
+        String closer = " --------------------  ".repeat(cards.size());
+        String apu =      "| apu foglalkozása:  | ".repeat(cards.size());
+        String emptyRow = "|                    | ".repeat(cards.size());
+        String graphic1 = "|-------//////-------| ".repeat(cards.size());
+        String graphic2 = "|------( O O )-------| ".repeat(cards.size());
+        String graphic3 = "|--ooO---( )---Ooo---| ".repeat(cards.size());
+        
+        
+        String cardField = "| %-18s |";
+        
+        String cardField1 = IntStream.range(0, cards.size()).mapToObj(i -> cardField + " ").collect(Collectors.joining()) + "%n";
+        
+        System.out.println(header);
+        System.out.println(graphic1);
+        System.out.println(graphic2);
+        System.out.println(graphic3);
+        System.out.println(emptyRow);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> "jel:" + c.getId()).toArray());
+        System.out.println(emptyRow);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> "név:" + c.getName()).toArray());
+        System.out.println(emptyRow);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> "csoport:" + c.getRank()).toArray());
+        System.out.println(emptyRow);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> ("súly: " + c.getWeight()) + "kg").toArray());
+        System.out.println(emptyRow);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> ("vödör: " + c.getSandBucketSize()) + " literes").toArray());
+        System.out.println(emptyRow);
+        System.out.println(apu);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> c.getMoney()).toArray());
+        System.out.println(emptyRow);
+        System.out.printf(closer);
+    } */
+
     
 }
