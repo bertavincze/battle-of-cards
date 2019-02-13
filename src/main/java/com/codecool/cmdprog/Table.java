@@ -187,55 +187,43 @@ public class Table {
         return cards;
     }
 
-    public  void printCurrentCards(List<Card> playerCards) {
-        int count = 1;
+    public  void printCurrentCards(List<Card> cards) {
+        /*int count = 1;
         for (Card element : playerCards) {
             System.out.println(count + ". " + element.toString());
             count++;
-        }
-    }
-
-    /*
-    
-    public void showCards(List<Card> cards) {
-<<<<<<< HEAD
-    
-    }
-=======
-        
-        String header = " ____________________  ".repeat(cards.size());
-        String closer = " --------------------  ".repeat(cards.size());
+        }*/
+        //String header = "+--------------------+ ".repeat(cards.size());
+        String closer = "|____________________| ".repeat(cards.size());
+        String broccoli = "| megevett brokkoli: | ".repeat(cards.size());
         String apu =      "| apu foglalkozása:  | ".repeat(cards.size());
         String emptyRow = "|                    | ".repeat(cards.size());
-        String graphic1 = "|-------//////-------| ".repeat(cards.size());
-        String graphic2 = "|------( O O )-------| ".repeat(cards.size());
-        String graphic3 = "|--ooO---( )---Ooo---| ".repeat(cards.size());
-        
-        
+        String graphic1 = "        //////         ".repeat(cards.size());
+        String graphic2 = "       ( O O )         ".repeat(cards.size());
+        String graphic3 = "|--ooO--- ˘ ---Ooo---| ".repeat(cards.size());
+    
+    
         String cardField = "| %-18s |";
-        
+    
         String cardField1 = IntStream.range(0, cards.size()).mapToObj(i -> cardField + " ").collect(Collectors.joining()) + "%n";
-        
-        System.out.println(header);
+    
+        //System.out.println(header);
         System.out.println(graphic1);
         System.out.println(graphic2);
         System.out.println(graphic3);
         System.out.println(emptyRow);
-        System.out.printf(cardField1, cards.stream().map((Card c) -> "jel:" + c.getId()).toArray());
+        System.out.printf(cardField1, cards.stream().map((Card c) -> "jel: " + c.getId()).toArray());
+        System.out.printf(cardField1, cards.stream().map((Card c) -> "név: " + c.getName()).toArray());
         System.out.println(emptyRow);
-        System.out.printf(cardField1, cards.stream().map((Card c) -> "név:" + c.getName()).toArray());
+        System.out.println(broccoli);
+        System.out.printf(cardField1, cards.stream().map((Card c) -> c.getEatedBrokkoliInKg() + "kg").toArray());
         System.out.println(emptyRow);
-        System.out.printf(cardField1, cards.stream().map((Card c) -> "csoport:" + c.getRank()).toArray());
-        System.out.println(emptyRow);
-        System.out.printf(cardField1, cards.stream().map((Card c) -> ("súly: " + c.getWeight()) + "kg").toArray());
+        System.out.printf(cardField1, cards.stream().map((Card c) -> ("testsúly: " + c.getWeight()) + "kg").toArray());
         System.out.println(emptyRow);
         System.out.printf(cardField1, cards.stream().map((Card c) -> ("vödör: " + c.getSandBucketSize()) + " literes").toArray());
         System.out.println(emptyRow);
         System.out.println(apu);
         System.out.printf(cardField1, cards.stream().map((Card c) -> c.getMoney()).toArray());
-        System.out.println(emptyRow);
         System.out.printf(closer);
-    } */
-
-    
+    }
 }
