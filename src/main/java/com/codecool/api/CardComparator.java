@@ -13,8 +13,8 @@ public class CardComparator implements Comparator<Card> {
     @Override
     public int compare(Card o1, Card o2) {
         switch (attribute) {
-            case RANK:
-                return o1.getRank().getValue() - o2.getRank().getValue();
+            case BROCCOLI:
+                return o1.getEatedBrokkoliInKg() - o2.getEatedBrokkoliInKg();
 
             case MONEY:
                 return o1.getMoney().getValue() - o2.getMoney().getValue();

@@ -18,5 +18,33 @@ public enum Money {
     public int getValue() {
         return value;
     }
-
+    
+    @Override
+    public String toString() {
+        String result;
+        switch (this){
+            case BENEFIT:
+                result = "Naplopó" + "(" + getValue() + ")";
+                break;
+            case MINIMUMWAGE:
+                result = "Közmunkás" + "(" + getValue() + ")";
+                break;
+            case SELFEMPLOYED:
+                result = "Vállalkozó" + "(" + getValue() + ")";
+                break;
+            case COMPANYOWNER:
+                result = "Cégtulaj" + "(" + getValue() + ")";
+                break;
+            case SMUGGLER:
+                result = "Csempész" + "(" + getValue() + ")";
+                break;
+            case TAXEVADER:
+                result = "Adócsaló" + "(" + getValue() + ")";
+                break;
+                default:
+                    result = "Ezt nem fogjuk látni! :)";
+                    break;
+        }
+        return result;
+    }
 }

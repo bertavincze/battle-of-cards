@@ -20,7 +20,7 @@ class CardComparatorTest {
         String[][] cardsArray = fh.read("resources/cards.csv");
         this.cards = new ArrayList<>();
         for (String[] strings : cardsArray) {
-            cards.add(new Card(strings[0], strings[1], Rank.valueOf(strings[2]),
+            cards.add(new Card(strings[0], strings[1], Integer.valueOf(strings[2]),
                 Integer.valueOf(strings[3]), Integer.valueOf(strings[4]),
                 Money.valueOf(strings[5])));
         }

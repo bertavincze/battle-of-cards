@@ -6,16 +6,16 @@ public class Card {
 
     private String id;
     private String name;
-    private Rank rank;
+    private int broccoliInKg;
     private int weight;
     private int sandBucketSize;
     private Money money;
     private State state;
 
-    public Card(String id, String name, Rank rank, int weight, int sandBucketSize, Money money) {
+    public Card(String id, String name, int broccoliInKg, int weight, int sandBucketSize, Money money) {
         this.id = id;
         this.name = name;
-        this.rank = rank;
+        this.broccoliInKg = broccoliInKg;
         this.weight = weight;
         this.sandBucketSize = sandBucketSize;
         this.money = money;
@@ -38,8 +38,8 @@ public class Card {
         return sandBucketSize;
     }
 
-    public Rank getRank() {
-        return rank;
+    public int getEatedBrokkoliInKg() {
+        return broccoliInKg;
     }
 
     public Money getMoney() {
@@ -58,6 +58,6 @@ public class Card {
     @Override
     public String toString() {
         return "id: " + id +
-            ", name:" + name + ", rank: " + rank + ", weight: " + weight + ", sandBucketSize: " + sandBucketSize + ", money: " + money;
+            ", name:" + name + ", rank: " + broccoliInKg + ", weight: " + weight + ", sandBucketSize: " + sandBucketSize + ", money: " + money;
     }
 }

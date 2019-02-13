@@ -2,7 +2,7 @@ package com.codecool.api;
 
 public enum Attribute {
 
-    RANK,
+    BROCCOLI,
     WEIGHT,
     SANDBUCKETSIZE,
     MONEY;

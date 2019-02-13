@@ -21,7 +21,7 @@ class DeckTest {
         String[][] cardsArray = fh.read("resources/cards.csv");
         this.cards = new ArrayList<>();
         for (String[] strings : cardsArray) {
-            cards.add(new Card(strings[0], strings[1], Rank.valueOf(strings[2]),
+            cards.add(new Card(strings[0], strings[1], Integer.valueOf(strings[2]),
                 Integer.valueOf(strings[3]), Integer.valueOf(strings[4]),
                 Money.valueOf(strings[5])));
         }
@@ -31,7 +31,7 @@ class DeckTest {
     @Test
     void getDeck() {
         assertEquals(deck.getDeck().get(0).getId(), new Card("gombácska", "Pistike",
-            Rank.FIRSTYEAR, 17, 1, Money.BENEFIT).getId());
+            31, 17, 1, Money.BENEFIT).getId());
     }
 
     @AfterEach
