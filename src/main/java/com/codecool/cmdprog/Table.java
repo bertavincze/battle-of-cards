@@ -102,7 +102,8 @@ public class Table {
         } else {
             player1Card = chooseCard(players.get(0), randAttribute);
         }
-        System.out.println("\n\t\t\t" + player1Card.getName() + " VS " + player2Card.getName() + "\n");
+        System.out.printf(" %18s" + "  -⚔-  %-18s ",player1Card.getName() ,player2Card.getName());
+        System.out.println("\n");
         printCurrentCards(Arrays.asList(player1Card, player2Card));
         roundEvaluator(randAttribute, player1Card, player2Card, players);
         System.out.println("\nFolytatáshoz nyomd meg az ENTER-t.");
