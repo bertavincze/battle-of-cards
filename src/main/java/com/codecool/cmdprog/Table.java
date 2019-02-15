@@ -187,7 +187,7 @@ public class Table {
     }
 
     private Deck newDeck() throws IOException {
-        List<Card> cards = readCards("./src/main/resources/cards.csv");
+        List<Card> cards = readCards("cards.csv");
         return new Deck(cards);
     }
 
@@ -222,7 +222,7 @@ public class Table {
         System.out.println(graphic2);
         System.out.println(graphic3);
         System.out.println(emptyRow);
-        System.out.printf(cardField1, cards.stream().map((Card c) -> "jel: " + c.getId()).toArray());
+        System.out.printf(cardField1, cards.stream().map(c -> "jel: " + c.getId()).toArray());
         System.out.printf(cardField1, cards.stream().map((Card c) -> "név: " + c.getName()).toArray());
         System.out.println(emptyRow);
         System.out.println(broccoli);
