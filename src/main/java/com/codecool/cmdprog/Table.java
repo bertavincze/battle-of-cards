@@ -47,7 +47,7 @@ public class Table {
     private void printImage() {
         FileHandler fh = new FileHandler();
         try {
-            String[] image = fh.readTxt("resources/image.txt");
+            String[] image = fh.readTxt("./src/main/resources/image.txt");
             for (String s : image) {
                 System.out.println(s);
             }
@@ -187,7 +187,7 @@ public class Table {
     }
 
     private Deck newDeck() throws IOException {
-        List<Card> cards = readCards("resources/cards.csv");
+        List<Card> cards = readCards("./src/main/resources/cards.csv");
         return new Deck(cards);
     }
 
